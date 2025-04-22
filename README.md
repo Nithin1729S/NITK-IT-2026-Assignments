@@ -1,3 +1,10 @@
 # NITK IT 2026
 
-CS101 
+Includes all my completed assignments for the Information Technology branch, NITK, Class of 2026.
+
+
+
+
+
+
+
