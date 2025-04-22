@@ -1,0 +1,18 @@
+#!/bin/sh
+
+if [ "$#" -ne 1 ]; then
+    echo "Enter valid folder path"
+    exit 1
+fi
+
+folder_path="$1"
+
+ls "$folder_path" |
+    while read folder; do
+        if [ -d "$folder_path/$folder" ]; then
+            files=$(ls "$folder_path/$folder" | wc -l)
+            if [ "$files" -eq 0 ]; then
+                rmdir "$folder_path/$folder"
+            fi
+        fi
+    done

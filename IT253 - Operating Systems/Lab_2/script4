@@ -1,0 +1,8 @@
+# !/bin/bash
+
+c=5
+while [ $c -ge 1 ]
+do
+	echo -n "$c "
+	(( c-- ))
+done

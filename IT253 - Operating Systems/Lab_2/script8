@@ -1,0 +1,16 @@
+#!/bin/bash
+
+
+if [ "$#" -ne 1 ]; then
+    echo "Enter a valid filename"
+    exit 1
+fi
+
+file_path=$1
+
+if [ -e "$file_path" ]; then
+    echo "The file '$file_path' exists."
+else
+    echo "The file '$file_path' does not exist."
+fi
+

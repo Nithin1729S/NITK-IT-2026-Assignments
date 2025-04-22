@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [ "$#" -ne 1 ]; then
+    echo "Enter valid file path"
+    exit 1
+fi
+
+input_file="$1"
+temp_file="temp_sorted.txt"
+
+cat "$input_file" | sort | uniq >"$temp_file"
+mv "$temp_file" "$input_file"

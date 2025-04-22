@@ -1,0 +1,22 @@
+*
+
+
+# But not .cpp
+!*.cpp
+!*.c
+!*.h
+!*.java
+!*.class
+!*.js
+!*.py
+!*.pdf
+!/*
+!*.png
+!*.csv
+!*.ipynb
+!.gitignore
+!README.md
+!*.txt
+
+Past Year/
+.ipynb_checkpoints/

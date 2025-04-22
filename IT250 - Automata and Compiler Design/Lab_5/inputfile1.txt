@@ -1,0 +1,6 @@
+switch ( inputvalue ) 
+{ 
+case 1 : b = c * d ; break ; 
+default : b = c ++ ; break ; 
+} 
+

@@ -1,0 +1,9 @@
+while (a>b)
+{
+	do
+	{
+	   //code
+	   
+	}while(1)
+	//code
+}

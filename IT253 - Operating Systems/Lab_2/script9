@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ "$#" -ne 1 ]; then
+    echo "Enter valid file path"
+    exit 1
+fi
+
+count=$(ls -R "$1" | wc -l)
+echo "$count"
+

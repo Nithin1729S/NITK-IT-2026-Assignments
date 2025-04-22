@@ -1,0 +1,16 @@
+#!/bin/sh
+
+if [ "$#" -ne 1 ]; then
+    echo "Enter valid file path"
+    exit 1
+fi
+
+ls "$1" |
+    while read folder; do
+        if [ -d "$1/$folder" ]; then
+            files=$(ls "$1/$folder" | wc -l)
+            if [ "$files" -eq 0 ]; then
+                echo "$folder" >>nithin.txt
+            fi
+        fi
+    done

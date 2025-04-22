@@ -1,0 +1,17 @@
+*
+Past Year/
+
+# But not .cpp
+!*.cpp
+!*.c
+!*.h
+!*.java
+!*.class
+!*.js
+!*.py
+!*.pdf
+!*.odt
+!.gitignore
+!README.md
+!*.txt
+!/*

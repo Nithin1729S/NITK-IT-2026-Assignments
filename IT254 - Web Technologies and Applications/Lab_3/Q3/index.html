@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <script src="script.js"></script>
+  <h1 align="center">Register</h1>
+
+  <!--
+    This is a form for users to enter scores
+    -->
+  <table align="center">
+    <tr>
+      <td>Name:</td>
+      <td><input name="name" id="name" type="text" /></td>
+    </tr>
+
+    <tr>
+      <td>RollNo:</td>
+      <td><input name="rollno" id="rollno" type="text" /></td>
+    </tr>
+
+    <tr>
+      <td>Branch:</td>
+      <td><input name="branch" id="branch" type="text" /></td>
+    </tr>
+
+    <tr>
+      <td>Email:</td>
+      <td><input name="email" id="email" type="text" /></td>
+    </tr>
+
+    <tr class="submit-btn-container">
+        <td colspan="2">
+          <button type="submit" onclick="score_table()">Submit</button>
+        </td>
+      </tr>
+  </table>
+  <div id="divTable">
+    <table id="tableScore" border="2">
+      <th>No</th>
+      <th>Name</th>
+      <th>RollNo</th>
+      <th>Branch</th>
+      <th>Email</th>
+    </table>
+  </div>
+</body>
+
+</html>

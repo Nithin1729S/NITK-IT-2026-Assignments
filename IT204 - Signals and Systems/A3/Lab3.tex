@@ -1,0 +1,1540 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Lab3}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{nithin-s}{%
+\section{Nithin S}\label{nithin-s}}
+
+\hypertarget{it085}{%
+\section{221IT085}\label{it085}}
+
+    \hypertarget{it204-lab-assignment-4}{%
+\section{IT204 Lab Assignment 4}\label{it204-lab-assignment-4}}
+
+    \hypertarget{problem-1-fourier-series-expansion}{%
+\section{Problem 1: Fourier Series
+Expansion}\label{problem-1-fourier-series-expansion}}
+
+    \[
+\begin{align*}
+ \quad x(t) = \begin{cases}
+3, & \text{if } 0 \leq t < 1 \\
+-3, & \text{if } 1 \leq t < 2
+\end{cases}
+\end{align*}
+\]
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{34}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+
+\PY{c+c1}{\PYZsh{} Define the period and amplitude of the square wave}
+\PY{n}{T} \PY{o}{=} \PY{l+m+mi}{2}  \PY{c+c1}{\PYZsh{} Period in seconds}
+\PY{n}{A} \PY{o}{=} \PY{l+m+mi}{3}  \PY{c+c1}{\PYZsh{} Amplitude}
+
+\PY{c+c1}{\PYZsh{} Create a time vector covering multiple periods}
+\PY{n}{t} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{1000}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Time from 0 to 10 seconds}
+
+\PY{c+c1}{\PYZsh{} Define the original square wave x(t)}
+\PY{n}{x1} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{piecewise}\PY{p}{(}\PY{n}{t}\PY{p}{,} \PY{p}{[}\PY{p}{(}\PY{n}{t} \PY{o}{\PYZpc{}} \PY{n}{T}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{l+m+mi}{1}\PY{p}{,} \PY{p}{(}\PY{n}{t} \PY{o}{\PYZpc{}} \PY{n}{T}\PY{p}{)} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{n}{A}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{n}{A}\PY{p}{]}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Function to calculate the Fourier series of the square wave up to n harmonics}
+\PY{k}{def} \PY{n+nf}{fourier\PYZus{}series\PYZus{}square\PYZus{}wave}\PY{p}{(}\PY{n}{t}\PY{p}{,} \PY{n}{n}\PY{p}{)}\PY{p}{:}
+    \PY{n}{result} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros\PYZus{}like}\PY{p}{(}\PY{n}{t}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Initialize the result array}
+    \PY{k}{for} \PY{n}{k} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{n} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+        \PY{n}{result} \PY{o}{+}\PY{o}{=} \PY{p}{(}\PY{l+m+mi}{4} \PY{o}{/} \PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{pi} \PY{o}{*} \PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{n}{k} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}\PY{p}{)} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{sin}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{n}{k} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{pi} \PY{o}{*} \PY{n}{t} \PY{o}{/} \PY{n}{T}\PY{p}{)}
+    \PY{k}{return} \PY{n}{result}
+
+\PY{c+c1}{\PYZsh{} List of harmonics to consider}
+\PY{n}{harmonics} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Create subplots to compare the original and reconstructed periodic signals}
+\PY{n}{fig}\PY{p}{,} \PY{n}{axes} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{harmonics}\PY{p}{)}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{,} \PY{n}{sharex}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{n} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{harmonics}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} Calculate the Fourier series up to n harmonics}
+    \PY{n}{x\PYZus{}reconstructed} \PY{o}{=} \PY{n}{A} \PY{o}{/} \PY{l+m+mi}{2} \PY{o}{+} \PY{n}{fourier\PYZus{}series\PYZus{}square\PYZus{}wave}\PY{p}{(}\PY{n}{t}\PY{p}{,} \PY{n}{n}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} Plot the original and reconstructed periodic signals}
+    \PY{n}{axes}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{t}\PY{p}{,} \PY{n}{x1}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Original}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{axes}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{t}\PY{p}{,} \PY{n}{x\PYZus{}reconstructed}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Reconstructed (n=}\PY{l+s+si}{\PYZob{}}\PY{n}{n}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{axes}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{n = }\PY{l+s+si}{\PYZob{}}\PY{n}{n}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{axes}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Time (s)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_4_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \[
+x(t) = 3 + \sqrt{3} \cos(2t) + \sin(2t) + \sin(3t) - 0.5 \cos\left(5t + \frac{\pi}{3}\right)
+\]
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{35}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+
+\PY{c+c1}{\PYZsh{} Define the time range}
+\PY{n}{t} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{1000}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Time from 0 to 10 seconds}
+
+\PY{c+c1}{\PYZsh{} Define the original signal x(t)}
+\PY{n}{x\PYZus{}t} \PY{o}{=} \PY{l+m+mi}{3} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{cos}\PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{n}{t}\PY{p}{)} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{sin}\PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{n}{t}\PY{p}{)} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{sin}\PY{p}{(}\PY{l+m+mi}{3} \PY{o}{*} \PY{n}{t}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{l+m+mf}{0.5} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{cos}\PY{p}{(}\PY{l+m+mi}{5} \PY{o}{*} \PY{n}{t} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{pi}\PY{o}{/}\PY{l+m+mi}{3}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Function to calculate the Fourier series up to n harmonics}
+\PY{k}{def} \PY{n+nf}{fourier\PYZus{}series}\PY{p}{(}\PY{n}{t}\PY{p}{,} \PY{n}{n}\PY{p}{)}\PY{p}{:}
+    \PY{n}{result} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros\PYZus{}like}\PY{p}{(}\PY{n}{t}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Initialize the result array}
+    \PY{k}{for} \PY{n}{k} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{n} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+        \PY{n}{result} \PY{o}{+}\PY{o}{=} \PY{p}{(}\PY{l+m+mi}{4} \PY{o}{/} \PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{pi} \PY{o}{*} \PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{n}{k} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}\PY{p}{)} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{sin}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{n}{k} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)} \PY{o}{*} \PY{n}{t}\PY{p}{)}
+    \PY{k}{return} \PY{n}{result}
+
+\PY{c+c1}{\PYZsh{} List of harmonics to consider}
+\PY{n}{harmonics} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Create subplots to compare the original and reconstructed signals}
+\PY{n}{fig}\PY{p}{,} \PY{n}{axes} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{harmonics}\PY{p}{)}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,} \PY{l+m+mi}{12}\PY{p}{)}\PY{p}{,} \PY{n}{sharex}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{n} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{harmonics}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} Calculate the Fourier series up to n harmonics}
+    \PY{n}{x\PYZus{}reconstructed} \PY{o}{=} \PY{n}{fourier\PYZus{}series}\PY{p}{(}\PY{n}{t}\PY{p}{,} \PY{n}{n}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} Plot the original and reconstructed signals}
+    \PY{n}{axes}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{t}\PY{p}{,} \PY{n}{x\PYZus{}t}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Original}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{axes}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{t}\PY{p}{,} \PY{n}{x\PYZus{}reconstructed}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Reconstructed (n=}\PY{l+s+si}{\PYZob{}}\PY{n}{n}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{axes}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{n = }\PY{l+s+si}{\PYZob{}}\PY{n}{n}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{axes}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Time (s)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_6_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{problem-2-fourier-transform}{%
+\section{Problem 2: Fourier
+Transform}\label{problem-2-fourier-transform}}
+
+    \[
+x(t) = e^{-2t} \cdot u(t) \quad \text{where } u(t) \text{ is the unit step function}
+\]
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{36}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+
+\PY{c+c1}{\PYZsh{} Define the time range}
+\PY{n}{t} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{1000}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Time from 0 to 5 seconds}
+
+\PY{c+c1}{\PYZsh{} Define the signal x(t)}
+\PY{k}{def} \PY{n+nf}{x}\PY{p}{(}\PY{n}{t}\PY{p}{)}\PY{p}{:}
+    \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2} \PY{o}{*} \PY{n}{t}\PY{p}{)} \PY{o}{*} \PY{p}{(}\PY{n}{t} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{l+m+mi}{0}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Compute the Fourier transform X(f)}
+\PY{n}{frequencies} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{fft}\PY{o}{.}\PY{n}{fftfreq}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{t}\PY{p}{)}\PY{p}{,} \PY{n}{t}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{t}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+\PY{n}{X} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{fft}\PY{o}{.}\PY{n}{fft}\PY{p}{(}\PY{n}{x}\PY{p}{(}\PY{n}{t}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Calculate the magnitude and phase of X(f)}
+\PY{n}{magnitude} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{X}\PY{p}{)}
+\PY{n}{phase} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{angle}\PY{p}{(}\PY{n}{X}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Plot the magnitude of X(f)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{frequencies}\PY{p}{,} \PY{n}{magnitude}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Magnitude of X(f)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Frequency (Hz)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Magnitude}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Plot the phase of X(f)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{frequencies}\PY{p}{,} \PY{n}{phase}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Phase of X(f)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Frequency (Hz)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Phase (radians)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{problem-3-frequency-analysis}{%
+\section{Problem-3: Frequency
+Analysis}\label{problem-3-frequency-analysis}}
+
+    \hypertarget{applications-in-signal-processing-describe-how-fourier-series-is-used-in-signal-processing.-provide-examples-of-how-it-can-be-applied-in-audio-processing-and-image-compression}{%
+\section{1. Applications in Signal Processing: Describe how Fourier
+series is used in signal processing. Provide examples of how it can be
+applied in audio processing and image
+compression}\label{applications-in-signal-processing-describe-how-fourier-series-is-used-in-signal-processing.-provide-examples-of-how-it-can-be-applied-in-audio-processing-and-image-compression}}
+
+    \hypertarget{fourier-series-in-signal-processing}{%
+\section{Fourier Series in Signal
+Processing}\label{fourier-series-in-signal-processing}}
+
+Fourier series is a fundamental mathematical tool in signal processing
+that helps represent complex periodic signals as a sum of simpler
+sinusoidal components. It was developed by Joseph Fourier in the early
+19th century and has since become a cornerstone of various fields,
+including audio processing and image compression. Here's how Fourier
+series is used in signal processing and examples of its applications:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Representation of Periodic Signals:}
+
+  \begin{itemize}
+  \item
+    Fourier series is primarily used to represent periodic signals in
+    the time domain as a sum of sine and cosine functions in the
+    frequency domain.
+  \item
+    A periodic signal can be expressed as:
+
+    \[
+    f(t) = a_0 + \sum_{n=1}^{\infty} \left[ a_n \cos(2\pi nf_0 t) + b_n \sin(2\pi nf_0 t) \right]
+    \]
+
+    Here, (f(t)) is the periodic signal, (f\_0) is the fundamental
+    frequency, and (a\_n) and (b\_n) are the coefficients of the sine
+    and cosine terms, respectively.
+  \end{itemize}
+\item
+  \textbf{Audio Processing:}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    In audio processing, Fourier series is used for various tasks such
+    as sound synthesis, filtering, and analysis.
+  \item
+    \textbf{Sound Synthesis:} Fourier series can be used to create
+    complex audio waveforms by combining simple harmonic waves. For
+    example, a musical instrument's sound can be simulated by adding up
+    the sine and cosine components corresponding to its harmonics.
+  \item
+    \textbf{Filtering:} Fourier analysis allows for the separation of
+    desired frequency components from noise or unwanted frequencies.
+    This is vital in tasks like equalization and audio effects.
+  \item
+    \textbf{Analysis:} By analyzing the frequency components of an audio
+    signal using Fourier techniques, you can perform tasks like pitch
+    detection, timbre analysis, and spectral visualization.
+  \end{itemize}
+\item
+  \textbf{Image Compression:}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    In image compression, such as in JPEG compression, the 2D Fourier
+    Transform is applied to the image data to convert it into the
+    frequency domain.
+  \item
+    The high-frequency components that represent fine details in the
+    image are quantized more aggressively or even discarded to achieve
+    compression.
+  \item
+    After compression, the image can be reconstructed by applying the
+    inverse Fourier Transform.
+  \item
+    By retaining essential frequency components and discarding less
+    important ones, image data can be compressed while maintaining an
+    acceptable level of visual quality.
+  \end{itemize}
+\end{enumerate}
+
+\textbf{Example in Audio Processing:} Suppose you have a musical signal,
+like a guitar note. You can analyze the signal's Fourier series to
+identify its fundamental frequency and harmonics. This information can
+be used to synthesize similar guitar sounds or apply effects like pitch
+shifting.
+
+\textbf{Example in Image Compression:} In JPEG image compression, the 2D
+Fourier Transform is used to convert the image into its frequency
+components. High-frequency components, which represent fine details, can
+be quantized more aggressively or even set to zero for compression. This
+reduces the amount of data required to represent the image. Upon
+decompression, the inverse Fourier Transform is applied to reconstruct
+the image, which might exhibit some loss of detail compared to the
+original but retains sufficient visual quality for many practical
+purposes.
+
+In both audio processing and image compression, Fourier series and
+transforms are powerful tools that enable the analysis, manipulation,
+and compression of signals and images in an efficient and effective
+manner.
+
+    \hypertarget{cybersecurity-discuss-the-role-of-fourier-series-in-cybersecurity.-how-can-fourier-analysis-help-in-detecting-irregular-patterns-or-anomalies-in-network-traffic-data}{%
+\section{2. Cybersecurity: Discuss the role of Fourier series in
+cybersecurity. How can Fourier analysis help in detecting irregular
+patterns or anomalies in network traffic
+data?}\label{cybersecurity-discuss-the-role-of-fourier-series-in-cybersecurity.-how-can-fourier-analysis-help-in-detecting-irregular-patterns-or-anomalies-in-network-traffic-data}}
+
+    \hypertarget{fourier-series-in-cybersecurity-and-anomaly-detection}{%
+\section{Fourier Series in Cybersecurity and Anomaly
+Detection}\label{fourier-series-in-cybersecurity-and-anomaly-detection}}
+
+Fourier series and Fourier analysis play a crucial role in
+cybersecurity, particularly in the context of detecting irregular
+patterns or anomalies in network traffic data. Let's explore how Fourier
+analysis aids in this important aspect of cybersecurity:
+
+\hypertarget{role-of-fourier-series-in-cybersecurity}{%
+\subsection{Role of Fourier Series in
+Cybersecurity:}\label{role-of-fourier-series-in-cybersecurity}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Frequency Domain Analysis:} Fourier series and the associated
+  Fourier transform allow cybersecurity professionals to examine network
+  traffic data in the frequency domain. By transforming network traffic
+  data from the time domain to the frequency domain, it becomes possible
+  to identify distinct patterns and characteristics of network traffic.
+\item
+  \textbf{Signal Decomposition:} Network traffic data is often a
+  combination of various underlying signals, including normal traffic
+  patterns and potentially malicious activities. Fourier analysis helps
+  decompose the complex network traffic signal into its constituent
+  frequency components. This decomposition can reveal hidden patterns or
+  anomalies that might be indicative of cyber threats.
+\item
+  \textbf{Feature Extraction:} Fourier analysis enables the extraction
+  of important features from network traffic data. These features can
+  include dominant frequencies, amplitudes, and phase information. These
+  features serve as valuable inputs for machine learning models and
+  anomaly detection algorithms.
+\end{enumerate}
+
+\hypertarget{fourier-analysis-for-anomaly-detection}{%
+\subsection{Fourier Analysis for Anomaly
+Detection:}\label{fourier-analysis-for-anomaly-detection}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Identifying Unexpected Frequencies:} Anomalies in network
+  traffic often manifest as unexpected or irregular frequencies. By
+  analyzing the frequency components of network data, Fourier analysis
+  can highlight unusual frequency spikes or patterns that deviate from
+  the norm. These irregular frequencies could correspond to network
+  attacks or unusual data patterns.
+\item
+  \textbf{Pattern Recognition:} Cyber threats often exhibit specific
+  patterns in network traffic data, such as distributed denial of
+  service (DDoS) attacks or port scanning attempts. Fourier analysis can
+  help in recognizing these patterns by identifying the characteristic
+  frequency components associated with such attacks.
+\item
+  \textbf{Behavioral Profiling:} Fourier analysis can be used to create
+  behavioral profiles of network traffic. By continuously monitoring and
+  analyzing network traffic data over time, it becomes possible to
+  establish baseline frequency patterns for normal network behavior.
+  Deviations from these patterns can trigger alerts for potential
+  cybersecurity incidents.
+\item
+  \textbf{Real-Time Detection:} Fourier analysis can be applied in
+  real-time or near-real-time to monitor incoming network traffic
+  continuously. This proactive approach allows for the immediate
+  detection of irregularities, enabling rapid responses to potential
+  threats.
+\item
+  \textbf{Combination with Machine Learning:} Fourier analysis can
+  complement machine learning-based anomaly detection techniques. The
+  frequency domain features extracted using Fourier analysis can be fed
+  into machine learning models, enhancing their ability to distinguish
+  between normal and abnormal network behavior.
+\end{enumerate}
+
+In summary, Fourier series and Fourier analysis provide a powerful set
+of tools for cybersecurity professionals to analyze and detect irregular
+patterns or anomalies in network traffic data. By examining the
+frequency components of network traffic, these techniques contribute to
+the early identification of cyber threats and help maintain the security
+and integrity of networked systems.
+
+    \hypertarget{data-analysis-explain-how-fourier-series-is-relevant-in-data-analysis.-provide-examples-of-how-it-can-be-used-to-analyze-time-series-data-in-fields-like-finance-and-iot.}{%
+\section{3. Data Analysis: Explain how Fourier series is relevant in
+data analysis. Provide examples of how it can be used to analyze
+time-series data in fields like finance and
+IoT.}\label{data-analysis-explain-how-fourier-series-is-relevant-in-data-analysis.-provide-examples-of-how-it-can-be-used-to-analyze-time-series-data-in-fields-like-finance-and-iot.}}
+
+    \hypertarget{fourier-series-in-data-analysis}{%
+\section{Fourier Series in Data
+Analysis}\label{fourier-series-in-data-analysis}}
+
+Fourier series is a powerful mathematical tool in data analysis that
+helps decompose complex signals or time-series data into simpler
+sinusoidal components. This decomposition allows for a better
+understanding of the underlying patterns and frequencies within the
+data. Here's how Fourier series is relevant in data analysis and its
+applications in fields like finance and IoT:
+
+\hypertarget{relevance-in-data-analysis}{%
+\subsection{Relevance in Data
+Analysis:}\label{relevance-in-data-analysis}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Frequency Component Identification:} Fourier series is used to
+  identify the fundamental frequencies and harmonic components present
+  in a given dataset. This is crucial for understanding periodic
+  behavior or hidden patterns within the data.
+\item
+  \textbf{Signal Decomposition:} It allows data analysts to break down a
+  complex signal or time-series data into its constituent sinusoidal
+  components. This decomposition simplifies the analysis and
+  interpretation of the data.
+\item
+  \textbf{Noise Reduction:} In many real-world datasets, there may be
+  noise or interference that obscures the underlying information.
+  Fourier analysis can help filter out noise by focusing on the dominant
+  frequency components.
+\item
+  \textbf{Feature Extraction:} Fourier analysis provides a way to
+  extract relevant features from time-series data, such as dominant
+  frequencies, amplitudes, and phase information. These features can be
+  used for further analysis or modeling.
+\end{enumerate}
+
+\hypertarget{applications-in-finance}{%
+\subsection{Applications in Finance:}\label{applications-in-finance}}
+
+\textbf{Example:} Analyzing Stock Prices
+
+In finance, Fourier series can be applied to analyze historical stock
+price data. By decomposing the stock price time series into its
+frequency components, analysts can identify key cycles or patterns in
+the market. For instance, Fourier analysis might reveal dominant
+frequencies corresponding to daily, weekly, or monthly fluctuations in
+stock prices. This information can be valuable for making investment
+decisions and understanding market dynamics.
+
+\hypertarget{applications-in-iot-internet-of-things}{%
+\subsection{Applications in IoT (Internet of
+Things):}\label{applications-in-iot-internet-of-things}}
+
+\textbf{Example:} Sensor Data Analysis
+
+In the IoT domain, various sensors continuously collect data from
+physical environments. Fourier analysis can be used to analyze sensor
+data to extract meaningful insights. For instance, in environmental
+monitoring, Fourier analysis can help identify recurring patterns in
+temperature or pollution levels over time. This information can be used
+for predictive maintenance or anomaly detection in IoT systems.
+
+\textbf{Example:} Signal Processing for IoT Devices
+
+IoT devices often generate and transmit data in the form of signals.
+Fourier analysis can be applied to process and interpret these signals.
+For example, in a smart home system, Fourier analysis can help identify
+the frequency components of sound or vibration signals captured by
+sensors, allowing for the detection of unusual events or behaviors.
+
+In both finance and IoT, Fourier series is a valuable tool for data
+analysis, enabling the extraction of hidden patterns, noise reduction,
+and feature extraction from time-series data. Its applications extend to
+various fields where understanding the frequency components of data is
+essential for making informed decisions and improving system
+performance.
+
+    \hypertarget{it-engineering-in-what-ways-can-fourier-series-be-applied-in-it-engineering-particularly-in-the-design-and-optimization-of-computer-algorithms-provide-examples.}{%
+\section{4. IT Engineering: In what ways can Fourier series be applied
+in IT engineering, particularly in the design and optimization of
+computer algorithms? Provide
+examples.}\label{it-engineering-in-what-ways-can-fourier-series-be-applied-in-it-engineering-particularly-in-the-design-and-optimization-of-computer-algorithms-provide-examples.}}
+
+    \hypertarget{fourier-series-in-it-engineering-and-algorithm-optimization}{%
+\section{Fourier Series in IT Engineering and Algorithm
+Optimization}\label{fourier-series-in-it-engineering-and-algorithm-optimization}}
+
+Fourier series, a mathematical tool used to analyze complex signals in
+terms of simpler sinusoidal components, has several valuable
+applications in IT engineering, especially in the design and
+optimization of computer algorithms. Here's a deeper look at how Fourier
+series can be applied with examples:
+
+\hypertarget{algorithm-analysis-and-complexity-evaluation}{%
+\subsection{\texorpdfstring{1. \textbf{Algorithm Analysis and Complexity
+Evaluation:}}{1. Algorithm Analysis and Complexity Evaluation:}}\label{algorithm-analysis-and-complexity-evaluation}}
+
+\begin{itemize}
+\item
+  \textbf{Description:} Fourier analysis can be used to understand the
+  time complexity of algorithms by breaking down their running time into
+  constituent frequency components. This provides insights into which
+  factors dominate the algorithm's overall complexity.
+\item
+  \textbf{Example:} Consider a sorting algorithm like merge sort.
+  Fourier analysis can reveal the dominant frequency components
+  associated with its recursive divide-and-conquer nature, aiding in the
+  analysis of its time complexity.
+\end{itemize}
+
+\hypertarget{optimization-of-algorithms}{%
+\subsection{\texorpdfstring{2. \textbf{Optimization of
+Algorithms:}}{2. Optimization of Algorithms:}}\label{optimization-of-algorithms}}
+
+\begin{itemize}
+\item
+  \textbf{Description:} In signal processing algorithms and filters,
+  Fourier analysis can optimize parameters by analyzing the frequency
+  components of signals processed. Fine-tuning these parameters can lead
+  to better algorithm performance.
+\item
+  \textbf{Example:} For an audio equalizer algorithm, Fourier analysis
+  can help determine the optimal frequency bands and filter parameters
+  to enhance audio quality.
+\end{itemize}
+
+\hypertarget{data-compression-and-decompression}{%
+\subsection{\texorpdfstring{3. \textbf{Data Compression and
+Decompression:}}{3. Data Compression and Decompression:}}\label{data-compression-and-decompression}}
+
+\begin{itemize}
+\item
+  \textbf{Description:} Fourier series is fundamental in data
+  compression algorithms. It transforms data into the frequency domain,
+  facilitating efficient compression by eliminating less critical
+  frequency components.
+\item
+  \textbf{Example:} In image compression algorithms like JPEG, Fourier
+  analysis helps represent image data in the frequency domain.
+  High-frequency components can then be compressed or discarded,
+  reducing file sizes without significant loss of visual quality.
+\end{itemize}
+
+\hypertarget{signal-processing-and-filtering}{%
+\subsection{\texorpdfstring{4. \textbf{Signal Processing and
+Filtering:}}{4. Signal Processing and Filtering:}}\label{signal-processing-and-filtering}}
+
+\begin{itemize}
+\item
+  \textbf{Description:} Digital filters for noise reduction or feature
+  extraction in signal processing tasks can be designed using Fourier
+  analysis. Identifying relevant frequency components helps create
+  effective filters.
+\item
+  \textbf{Example:} In speech recognition, Fourier analysis assists in
+  designing filters to isolate phonetic components and improve speech
+  recognition accuracy.
+\end{itemize}
+
+\hypertarget{cryptography-and-security}{%
+\subsection{\texorpdfstring{5. \textbf{Cryptography and
+Security:}}{5. Cryptography and Security:}}\label{cryptography-and-security}}
+
+\begin{itemize}
+\item
+  \textbf{Description:} Fourier analysis can be applied in certain
+  encryption techniques to analyze the frequency distribution of
+  encrypted data, enhancing security analysis and threat detection.
+\item
+  \textbf{Example:} In network security, examining the frequency
+  components of encrypted network traffic can reveal patterns that may
+  indicate malicious activity, contributing to intrusion detection
+  systems.
+\end{itemize}
+
+\hypertarget{network-analysis-and-optimization}{%
+\subsection{\texorpdfstring{6. \textbf{Network Analysis and
+Optimization:}}{6. Network Analysis and Optimization:}}\label{network-analysis-and-optimization}}
+
+\begin{itemize}
+\item
+  \textbf{Description:} Fourier series is used in network analysis to
+  identify periodic patterns or anomalies in network data. This aids in
+  optimizing network performance and enhancing security.
+\item
+  \textbf{Example:} Analyzing network traffic data using Fourier
+  analysis can reveal patterns in usage, facilitating bandwidth
+  allocation and the detection of irregularities that may indicate
+  cyberattacks.
+\end{itemize}
+
+Incorporating Fourier series into IT engineering and algorithm design
+provides a powerful tool for understanding, optimizing, and securing
+various computational tasks, ultimately leading to more efficient and
+effective IT solutions.
+
+    \hypertarget{image-processing-how-is-the-fourier-transform-applied-in-image-processing-explain-the-concept-of-image-frequency-domain-representation-and-its-significance.}{%
+\section{5. Image Processing: How is the Fourier transform applied in
+image processing? Explain the concept of image frequency domain
+representation and its
+significance.}\label{image-processing-how-is-the-fourier-transform-applied-in-image-processing-explain-the-concept-of-image-frequency-domain-representation-and-its-significance.}}
+
+    \hypertarget{fourier-transform-in-image-processing}{%
+\section{Fourier Transform in Image
+Processing}\label{fourier-transform-in-image-processing}}
+
+In image processing, the Fourier transform is a fundamental technique
+used for analyzing and manipulating images in the frequency domain. It
+plays a crucial role in tasks like image enhancement, compression, and
+filtering.
+
+\hypertarget{fourier-transform-concept}{%
+\subsection{Fourier Transform
+Concept:}\label{fourier-transform-concept}}
+
+The Fourier transform in image processing involves converting an image
+from its spatial domain (pixel values) to the frequency domain. This
+transformation reveals the frequency components that make up the image.
+Mathematically, for a 2D image, the continuous Fourier transform is
+defined as:
+
+\[ F(u, v) = \iint f(x, y) \cdot e^{-i 2\pi (ux + vy)} \,dx\,dy \]
+
+\begin{itemize}
+\tightlist
+\item
+  ( F(u, v) ) represents the complex-valued frequency components.
+\item
+  ( f(x, y) ) is the pixel intensity at spatial coordinates ( (x, y) ).
+\item
+  ( u ) and ( v ) are the spatial frequencies in the horizontal and
+  vertical directions, respectively.
+\item
+  The inverse Fourier transform can be used to convert the frequency
+  domain representation back to the spatial domain:
+\end{itemize}
+
+\[ f(x, y) = \iint F(u, v) \cdot e^{i 2\pi (ux + vy)} \,du\,dv \]
+
+\hypertarget{significance-in-image-processing}{%
+\subsection{Significance in Image
+Processing:}\label{significance-in-image-processing}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Frequency Analysis:} The Fourier transform allows for the
+  analysis of the image in terms of its frequency components. This
+  reveals information about patterns, edges, and structures in the image
+  that may not be as evident in the spatial domain.
+\item
+  \textbf{Filtering:} In the frequency domain, it becomes possible to
+  apply filters to enhance or suppress specific frequency components.
+  For example, low-pass filters can be used to smooth an image, while
+  high-pass filters can enhance edges and fine details.
+\item
+  \textbf{Compression:} Image compression techniques, such as JPEG,
+  utilize the Fourier transform to convert the image into its frequency
+  components. High-frequency components, representing fine details, can
+  be quantized or compressed more aggressively, reducing file size while
+  maintaining acceptable image quality.
+\item
+  \textbf{Noise Removal:} Noise in an image often manifests as
+  high-frequency components. Fourier analysis can help distinguish noise
+  from the desired signal, making it easier to remove or reduce noise.
+\item
+  \textbf{Transformation:} The Fourier transform can be used to change
+  the representation of an image. For example, it can be employed in
+  tasks like texture analysis, where specific textures may exhibit
+  distinct frequency signatures.
+\end{enumerate}
+
+The Fourier transform's ability to reveal the frequency content of an
+image makes it a powerful tool in image processing, enabling a wide
+range of operations for improving image quality and analysis.
+
+    \hypertarget{data-science-describe-the-role-of-the-fourier-transform-in-data-science-and-machine-learning.-provide-examples-of-applications-in-feature-extraction-and-data-preprocessing.}{%
+\section{6. Data Science: Describe the role of the Fourier transform in
+data science and machine learning. Provide examples of applications in
+feature extraction and data
+preprocessing.}\label{data-science-describe-the-role-of-the-fourier-transform-in-data-science-and-machine-learning.-provide-examples-of-applications-in-feature-extraction-and-data-preprocessing.}}
+
+    \hypertarget{role-of-fourier-transform-in-data-science-and-machine-learning}{%
+\section{Role of Fourier Transform in Data Science and Machine
+Learning}\label{role-of-fourier-transform-in-data-science-and-machine-learning}}
+
+The Fourier transform is a valuable mathematical tool with significant
+applications in data science and machine learning. It plays a pivotal
+role in feature extraction and data preprocessing. Let's explore its
+relevance and provide examples of its applications:
+
+\hypertarget{fourier-transform-in-data-science}{%
+\subsection{Fourier Transform in Data
+Science:}\label{fourier-transform-in-data-science}}
+
+The Fourier transform is used in data science for analyzing and
+manipulating data in the frequency domain. It is particularly valuable
+in tasks where understanding the frequency components of data is
+essential.
+
+\hypertarget{feature-extraction}{%
+\subsubsection{\texorpdfstring{\textbf{Feature
+Extraction:}}{Feature Extraction:}}\label{feature-extraction}}
+
+In data science, feature extraction involves transforming raw data into
+a set of meaningful features that can be used for analysis or modeling.
+The Fourier transform can be employed to extract relevant frequency
+domain features from time-series data, audio signals, or images.
+
+\textbf{Example:} In audio processing, the Fourier transform can convert
+an audio signal into its frequency components, allowing for the
+extraction of features like dominant frequencies, spectral centroids, or
+harmonic-to-noise ratios. These features are crucial for tasks like
+speech recognition or music genre classification.
+
+\hypertarget{data-preprocessing}{%
+\subsubsection{\texorpdfstring{\textbf{Data
+Preprocessing:}}{Data Preprocessing:}}\label{data-preprocessing}}
+
+The Fourier transform is utilized in data preprocessing to remove noise,
+detrend data, or emphasize specific frequency components. It helps clean
+and prepare data for analysis.
+
+\textbf{Example:} In financial time series analysis, the Fourier
+transform can be used to remove high-frequency noise from stock price
+data. By filtering out unwanted high-frequency components, it becomes
+easier to identify underlying trends or patterns in the data.
+
+\hypertarget{fourier-transform-in-machine-learning}{%
+\subsection{Fourier Transform in Machine
+Learning:}\label{fourier-transform-in-machine-learning}}
+
+The Fourier transform also finds applications in machine learning, where
+it contributes to improving model performance and handling complex data.
+
+\hypertarget{signal-processing-for-machine-learning}{%
+\subsubsection{\texorpdfstring{\textbf{Signal Processing for Machine
+Learning:}}{Signal Processing for Machine Learning:}}\label{signal-processing-for-machine-learning}}
+
+Machine learning models often work with signals, such as sensor data,
+audio, or images. The Fourier transform is used for feature extraction
+and signal preprocessing, making it easier for machine learning
+algorithms to work with such data.
+
+\textbf{Example:} In natural language processing (NLP), the Fourier
+transform can be applied to analyze the frequency of word occurrences in
+text documents. This information can be used as features for text
+classification tasks.
+
+\hypertarget{convolutional-neural-networks-cnns}{%
+\subsubsection{\texorpdfstring{\textbf{Convolutional Neural Networks
+(CNNs):}}{Convolutional Neural Networks (CNNs):}}\label{convolutional-neural-networks-cnns}}
+
+In deep learning, Convolutional Neural Networks (CNNs) use convolution
+operations that can be viewed as a form of Fourier transform. CNNs are
+highly effective in image recognition tasks, as they can learn to
+extract meaningful features from the frequency domain of images.
+
+\textbf{Example:} CNNs can automatically learn to detect edges,
+textures, or other features in images, which are essentially patterns in
+the frequency domain.
+
+The Fourier transform's ability to analyze data in the frequency domain
+is a valuable asset in data science and machine learning. It enables
+feature extraction, noise reduction, and data preprocessing, enhancing
+the quality of input data and improving the performance of machine
+learning models.
+
+    \hypertarget{cybersecurity-and-encryption-discuss-how-the-fourier-transform-is-used-in-encryption-and-cybersecurity.-explain-the-concept-of-frequency-domain-encryption-and-its-benefits.}{%
+\section{7. Cybersecurity and Encryption: Discuss how the Fourier
+transform is used in encryption and cybersecurity. Explain the concept
+of frequency-domain encryption and its
+benefits.}\label{cybersecurity-and-encryption-discuss-how-the-fourier-transform-is-used-in-encryption-and-cybersecurity.-explain-the-concept-of-frequency-domain-encryption-and-its-benefits.}}
+
+    \hypertarget{fourier-transform-in-encryption-and-cybersecurity}{%
+\section{Fourier Transform in Encryption and
+Cybersecurity}\label{fourier-transform-in-encryption-and-cybersecurity}}
+
+The Fourier transform is a mathematical tool with applications in
+encryption and cybersecurity, particularly in the concept of
+frequency-domain encryption. Let's explore how the Fourier transform is
+used and the benefits of frequency-domain encryption:
+
+\hypertarget{fourier-transform-in-encryption-and-cybersecurity-1}{%
+\subsection{Fourier Transform in Encryption and
+Cybersecurity:}\label{fourier-transform-in-encryption-and-cybersecurity-1}}
+
+The Fourier transform plays a role in encryption and cybersecurity by
+enabling the transformation of data into the frequency domain, where it
+can be manipulated for secure communication and protection against
+various cyber threats.
+
+\hypertarget{frequency-domain-encryption}{%
+\subsubsection{\texorpdfstring{\textbf{Frequency-Domain
+Encryption:}}{Frequency-Domain Encryption:}}\label{frequency-domain-encryption}}
+
+Frequency-domain encryption is a technique that leverages the Fourier
+transform to encrypt data in the frequency domain. Instead of encrypting
+data directly in the time or spatial domain, it is transformed into the
+frequency domain, encrypted, and then transformed back when needed. This
+approach provides several benefits:
+
+\hypertarget{benefits-of-frequency-domain-encryption}{%
+\paragraph{\texorpdfstring{\textbf{Benefits of Frequency-Domain
+Encryption:}}{Benefits of Frequency-Domain Encryption:}}\label{benefits-of-frequency-domain-encryption}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Enhanced Security:} Encrypting data in the frequency domain
+  can provide a higher level of security compared to traditional
+  methods. Frequency-domain encryption makes it more challenging for
+  attackers to analyze or intercept data, as it requires knowledge of
+  the encryption algorithm and the inverse Fourier transform to decipher
+  the information.
+\item
+  \textbf{Selective Encryption:} Frequency-domain encryption allows for
+  the selective encryption of specific frequency components while
+  leaving others unencrypted. This fine-grained control over encryption
+  enables efficient protection of sensitive data without encrypting the
+  entire dataset.
+\item
+  \textbf{Noise Addition:} Frequency-domain encryption often involves
+  adding random noise to the frequency components before encryption.
+  This noise makes it even more difficult for unauthorized parties to
+  decrypt the data without the appropriate decryption key.
+\end{enumerate}
+
+\hypertarget{applications-in-cybersecurity}{%
+\subsubsection{\texorpdfstring{\textbf{Applications in
+Cybersecurity:}}{Applications in Cybersecurity:}}\label{applications-in-cybersecurity}}
+
+The Fourier transform is also relevant in cybersecurity for tasks such
+as anomaly detection and intrusion detection. By analyzing the frequency
+components of network traffic or system data, it becomes possible to
+detect irregular patterns or anomalies that may indicate cyber threats.
+
+\textbf{Example:} In network security, Fourier analysis can be applied
+to monitor network traffic in real-time. Sudden spikes or unusual
+frequency patterns in the traffic can trigger alerts, helping security
+teams identify potential attacks like Distributed Denial of Service
+(DDoS) attacks.
+
+\textbf{Example:} In cryptography, the Fourier transform can be used to
+analyze the frequency distribution of encrypted data. Any unexpected
+frequency patterns in the encrypted data may indicate tampering or
+unauthorized access.
+
+\hypertarget{conclusion}{%
+\subsection{Conclusion:}\label{conclusion}}
+
+The Fourier transform is a valuable tool in encryption and
+cybersecurity, enabling frequency-domain encryption techniques that
+enhance data security and privacy. By manipulating data in the frequency
+domain and applying noise addition, frequency-domain encryption provides
+advanced protection against cyber threats.
+
+    \hypertarget{big-data-in-the-context-of-big-data-analytics-how-can-fourier-analysis-be-utilized-to-process-and-analyze-large-datasets-efficiently}{%
+\section{8. Big Data: In the context of big data analytics, how can
+Fourier analysis be utilized to process and analyze large datasets
+efficiently?}\label{big-data-in-the-context-of-big-data-analytics-how-can-fourier-analysis-be-utilized-to-process-and-analyze-large-datasets-efficiently}}
+
+    \hypertarget{utilizing-fourier-analysis-in-big-data-analytics}{%
+\section{Utilizing Fourier Analysis in Big Data
+Analytics}\label{utilizing-fourier-analysis-in-big-data-analytics}}
+
+In the context of big data analytics, Fourier analysis can be a valuable
+tool for processing and analyzing large datasets efficiently. Let's
+explore how Fourier analysis can be utilized and its benefits in
+handling big data:
+
+\hypertarget{fourier-analysis-in-big-data}{%
+\subsection{Fourier Analysis in Big
+Data:}\label{fourier-analysis-in-big-data}}
+
+\hypertarget{data-compression}{%
+\subsubsection{\texorpdfstring{\textbf{1. Data
+Compression:}}{1. Data Compression:}}\label{data-compression}}
+
+Big data often comes with a significant volume of raw data, which can be
+computationally intensive to process. Fourier analysis can be applied to
+compress the data efficiently by converting it into the frequency
+domain. This transformation allows for the representation of the data
+with fewer significant components, reducing storage requirements and
+processing time.
+
+\hypertarget{noise-reduction}{%
+\subsubsection{\texorpdfstring{\textbf{2. Noise
+Reduction:}}{2. Noise Reduction:}}\label{noise-reduction}}
+
+Large datasets may contain noise or irrelevant information that can
+hinder analysis. Fourier analysis can help in identifying and filtering
+out noise by focusing on the frequency components that carry meaningful
+information. This noise reduction enhances the quality of data for
+subsequent analysis.
+
+\hypertarget{feature-extraction}{%
+\subsubsection{\texorpdfstring{\textbf{3. Feature
+Extraction:}}{3. Feature Extraction:}}\label{feature-extraction}}
+
+In big data analytics, identifying relevant features or patterns within
+the data is crucial. Fourier analysis enables the extraction of
+important frequency domain features, which can serve as the basis for
+further analysis and modeling.
+
+\hypertarget{signal-processing}{%
+\subsubsection{\texorpdfstring{\textbf{4. Signal
+Processing:}}{4. Signal Processing:}}\label{signal-processing}}
+
+Big data often includes time-series data or signals from various
+sources. Fourier analysis is instrumental in processing these signals
+efficiently. For example, in sensor data analytics for the Internet of
+Things (IoT), Fourier analysis can help extract meaningful insights from
+sensor readings.
+
+\hypertarget{parallel-processing}{%
+\subsubsection{\texorpdfstring{\textbf{5. Parallel
+Processing:}}{5. Parallel Processing:}}\label{parallel-processing}}
+
+Efficient processing of large datasets often requires parallel
+computing. Fourier analysis is inherently parallelizable, making it
+well-suited for distributed computing frameworks like Apache Spark or
+Hadoop. Multiple Fourier transformations can be computed in parallel,
+significantly reducing processing time.
+
+\hypertarget{anomaly-detection}{%
+\subsubsection{\texorpdfstring{\textbf{6. Anomaly
+Detection:}}{6. Anomaly Detection:}}\label{anomaly-detection}}
+
+Big data analytics involves the identification of anomalies or irregular
+patterns within vast datasets. Fourier analysis can be applied to detect
+anomalies by analyzing the frequency components of the data. Sudden
+deviations in frequency patterns may indicate anomalies that warrant
+further investigation.
+
+\hypertarget{conclusion}{%
+\subsection{Conclusion:}\label{conclusion}}
+
+In the realm of big data analytics, Fourier analysis serves as a
+powerful tool for efficiently processing and analyzing large datasets.
+It aids in data compression, noise reduction, feature extraction, signal
+processing, and parallel computing, enabling data scientists and
+analysts to extract valuable insights from massive datasets effectively.
+
+    \hypertarget{problem-4.1-harmonic-detection}{%
+\section{Problem 4.1: Harmonic
+Detection}\label{problem-4.1-harmonic-detection}}
+
+    \hypertarget{detecting-fundamental-frequencies-in-audio-signal-using-fourier-transform}{%
+\subsection{Detecting Fundamental Frequencies in Audio Signal Using
+Fourier
+Transform}\label{detecting-fundamental-frequencies-in-audio-signal-using-fourier-transform}}
+
+In audio signal processing, detecting fundamental frequencies
+(harmonics) is essential for identifying and separating individual
+musical notes or tones in a complex audio recording. The Fourier
+transform is a powerful tool for accomplishing this task.
+
+\hypertarget{using-the-fourier-transform}{%
+\subsection{Using the Fourier
+Transform:}\label{using-the-fourier-transform}}
+
+\hypertarget{fourier-transform-for-spectrum-analysis}{%
+\subsection{1. Fourier Transform for Spectrum
+Analysis:}\label{fourier-transform-for-spectrum-analysis}}
+
+The Fourier transform allows us to convert a time-domain audio signal
+into the frequency domain. This transformation reveals the frequency
+components present in the signal, including the fundamental frequencies
+of musical notes.
+
+\hypertarget{peak-detection}{%
+\subsection{2. Peak Detection:}\label{peak-detection}}
+
+Once we have the frequency domain representation of the signal, we can
+identify the peaks in the spectrum. Each peak corresponds to a harmonic
+of a musical note, and the highest peak corresponds to the fundamental
+frequency.
+
+\hypertarget{harmonic-extraction}{%
+\subsection{3. Harmonic Extraction:}\label{harmonic-extraction}}
+
+By analyzing the peaks and their frequencies, we can determine the
+fundamental frequencies (fundamental tones) and their respective
+amplitudes. These fundamental frequencies correspond to the musical
+notes played in the audio recording.
+
+\hypertarget{python-code-snippet}{%
+\subsection{Python Code Snippet:}\label{python-code-snippet}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{k+kn}{from} \PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{fft} \PY{k+kn}{import} \PY{n}{fft}
+\PY{k+kn}{from} \PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{signal} \PY{k+kn}{import} \PY{n}{find\PYZus{}peaks}
+
+\PY{c+c1}{\PYZsh{} Load the audio signal (replace \PYZsq{}audio\PYZus{}signal.wav\PYZsq{} with your file)}
+\PY{n}{audio\PYZus{}signal} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{loadtxt}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{audio\PYZus{}signal.wav}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Perform the Fourier transform}
+\PY{n}{spectrum} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{fft}\PY{p}{(}\PY{n}{audio\PYZus{}signal}\PY{p}{)}\PY{p}{)}
+\PY{n}{frequencies} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{fft}\PY{o}{.}\PY{n}{fftfreq}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{spectrum}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Find peaks in the spectrum (adjust threshold as needed)}
+\PY{n}{peaks}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{find\PYZus{}peaks}\PY{p}{(}\PY{n}{spectrum}\PY{p}{,} \PY{n}{height}\PY{o}{=}\PY{l+m+mi}{1000}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Extract fundamental frequencies and their amplitudes}
+\PY{n}{fundamental\PYZus{}frequencies} \PY{o}{=} \PY{n}{frequencies}\PY{p}{[}\PY{n}{peaks}\PY{p}{]}
+\PY{n}{amplitudes} \PY{o}{=} \PY{n}{spectrum}\PY{p}{[}\PY{n}{peaks}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Display the detected fundamental frequencies and amplitudes}
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{fundamental\PYZus{}frequencies}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Fundamental Frequency }\PY{l+s+si}{\PYZob{}}\PY{n}{i}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{l+m+mi}{1}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{: }\PY{l+s+si}{\PYZob{}}\PY{n}{fundamental\PYZus{}frequencies}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ Hz, Amplitude: }\PY{l+s+si}{\PYZob{}}\PY{n}{amplitudes}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Plot the spectrum with detected peaks}
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{frequencies}\PY{p}{,} \PY{n}{spectrum}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{frequencies}\PY{p}{[}\PY{n}{peaks}\PY{p}{]}\PY{p}{,} \PY{n}{spectrum}\PY{p}{[}\PY{n}{peaks}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ro}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Spectrum with Detected Peaks}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Frequency (Hz)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Amplitude}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{problem-4.2-real-world-application}{%
+\section{Problem 4.2: Real-World
+Application}\label{problem-4.2-real-world-application}}
+
+    \hypertarget{automatic-transcription-of-musical-notes-from-audio}{%
+\section{Automatic Transcription of Musical Notes from
+Audio}\label{automatic-transcription-of-musical-notes-from-audio}}
+
+\hypertarget{fourier-analysis-in-musical-note-transcription}{%
+\subsection{Fourier Analysis in Musical Note
+Transcription:}\label{fourier-analysis-in-musical-note-transcription}}
+
+\hypertarget{a.-the-role-of-fourier-analysis}{%
+\subsubsection{a. The Role of Fourier
+Analysis:}\label{a.-the-role-of-fourier-analysis}}
+
+In the project aimed at automatically transcribing musical notes from an
+audio recording, Fourier analysis plays a pivotal role. Specifically, it
+is crucial for the identification of harmonics and their frequencies.
+Here's why:
+
+\begin{itemize}
+\item
+  \textbf{Harmonic Identification:} When a musical instrument produces a
+  sound, it typically generates a fundamental frequency along with
+  harmonics, which are integer multiples of the fundamental frequency.
+  These harmonics are what create the distinctive timbre or tone of the
+  instrument. Fourier analysis helps identify and separate these
+  harmonics in the audio signal.
+\item
+  \textbf{Frequency and Duration Information:} By analyzing the
+  harmonics, we can extract essential information about each musical
+  note, such as its fundamental frequency (pitch) and duration. This
+  information is fundamental in creating a musical score.
+\end{itemize}
+
+\hypertarget{b.-steps-to-implement-the-software}{%
+\subsubsection{b. Steps to Implement the
+Software:}\label{b.-steps-to-implement-the-software}}
+
+To implement the software for automatic musical note transcription,
+several steps need to be taken:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Data Preprocessing:}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{Noise Reduction:} Remove background noise or unwanted
+    artifacts from the audio recording to enhance the quality of the
+    signal.
+  \item
+    \textbf{Segmentation:} Divide the audio into smaller segments, which
+    makes it easier to analyze individual musical notes.
+  \end{itemize}
+\item
+  \textbf{Fourier Analysis:}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{FFT (Fast Fourier Transform):} Apply the FFT to each
+    segmented portion of the audio to transform it from the time domain
+    to the frequency domain.
+  \item
+    \textbf{Harmonic Detection:} Identify the peaks or harmonics in the
+    spectrum to determine the fundamental frequencies of the notes being
+    played.
+  \end{itemize}
+\item
+  \textbf{Musical Note Representation:}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{Pitch Estimation:} Convert the fundamental frequencies into
+    musical notes (e.g., A, B, C\#) based on a defined mapping.
+  \item
+    \textbf{Duration Estimation:} Determine the duration of each note,
+    which can be inferred from the time duration of the segments.
+  \end{itemize}
+\item
+  \textbf{Output Representation:}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{Musical Score Generation:} Assemble the identified musical
+    notes with their respective frequencies and durations into a musical
+    score format (e.g., MIDI).
+  \end{itemize}
+\end{enumerate}
+
+\hypertarget{c.-challenges-and-limitations}{%
+\subsubsection{c.~Challenges and
+Limitations:}\label{c.-challenges-and-limitations}}
+
+When dealing with real-world audio recordings, several challenges and
+limitations need to be considered:
+
+\begin{itemize}
+\item
+  \textbf{Noise and Artifacts:} Real-world recordings often contain
+  various sources of noise, including background sounds and
+  environmental factors. These can interfere with the accurate
+  identification of harmonics and musical notes.
+\item
+  \textbf{Variations in Performance:} Musicians might not play notes
+  with perfect pitch or timing. Variations in tempo, articulation, and
+  dynamics can complicate the transcription process.
+\item
+  \textbf{Polyphony:} When multiple musical notes are played
+  simultaneously (polyphony), the task becomes more complex, as
+  harmonics from different notes can overlap in the frequency domain.
+\item
+  \textbf{Instrument Variability:} Different musical instruments have
+  distinct harmonic structures and timbres. Adapting the software to
+  recognize and differentiate between various instruments is
+  challenging.
+\item
+  \textbf{Expressiveness:} Expressive musical elements like vibrato,
+  glissando, and dynamics add complexity to transcription.
+\end{itemize}
+
+Despite these challenges, with advanced signal processing techniques and
+machine learning algorithms, automatic transcription software can
+achieve remarkable accuracy and is valuable in applications such as
+music analysis, score generation, and music education.
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}

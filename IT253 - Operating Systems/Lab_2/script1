@@ -1,0 +1,6 @@
+# !/bin/bash
+
+echo "Current date: $(date '+%d-%m-%Y')"
+echo "Current time: $(date '+%H:%M:%S')"
+echo "Username: $USER"
+echo "Current directory: $(pwd)"

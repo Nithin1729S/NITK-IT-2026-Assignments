@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Validator</title>
+    <style>
+        body {
+            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 50%;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: rgb(0, 4, 128);
+        }
+
+        form {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label, input {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: inline-block; /* Added to center the button */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Password Validator</h1>
+        <form id="passwordForm">
+            <label for="password1">Enter password:</label>
+            <input type="password" id="password1" name="password1">
+            <label for="password2">Confirm password:</label>
+            <input type="password" id="password2" name="password2">
+        </form>
+        <br/>
+        <button type="button" onclick="validatePassword()">Validate</button>
+    </div>
+
+    <script>
+        function validatePassword() {
+            var password1 = document.getElementById("password1").value;
+            var password2 = document.getElementById("password2").value;
+
+            if (password1.length < 8) {
+                alert("Password must be at least 8 characters long.");
+            } else if (password1 !== password2) {
+                alert("Passwords entered don't match.");
+            } else {
+                alert("Password Validated")
+                document.getElementById("passwordForm").reset();
+            }
+        }
+    </script>
+</body>
+
+</html>

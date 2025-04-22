@@ -1,0 +1,15 @@
+Industry,JobType,Income,PreviousCustomer,Class
+Aerospace,Engineering,High,No,NO
+Aerospace,Engineering,High,Yes,NO
+Auto,Engineering,High,No,YES
+Electronics,Marketing,High,No,YES
+Urban,Marketing,Low,No,YES
+Urban,Marketing,Low,Yes,NO
+Auto,Marketing,Low,Yes,YES
+Aerospace,Sales,High,No,NO
+Aerospace,Marketing,Low,No,YES
+Electronics,Sales,Low,No,NO
+Aerospace,Sales,Low,Yes,YES
+Electronics,Sales,High,Yes,NO
+Auto,Engineering,Low,No,YES
+Electronics,Sales,High,Yes,NO
