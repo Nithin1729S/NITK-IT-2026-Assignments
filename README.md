@@ -27,5 +27,6 @@ This repository contains my completed assignments for the **Information Technolo
 | **IT351**   | Human Computer Interaction                    | Dr. Geetha V, Mr. Santanu Dey                          |
 | **IT352**   | Information Assurance and Security            | Dr. Jaidhar C D                                        |
 | **IT464**   | Foundations of Machine Learning               | Prof. Ram Mohana Reddy Guddeti, Dr. Palla Parasuram Yadav |
+| **IT440**   | Practical Training                            | Dr. Nagamma Patil |
 
 ---
