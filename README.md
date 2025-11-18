@@ -28,5 +28,8 @@ This repository contains my completed assignments for the **Information Technolo
 | **IT352**   | Information Assurance and Security            | Dr. Jaidhar C D                                        |
 | **IT464**   | Foundations of Machine Learning               | Prof. Ram Mohana Reddy Guddeti, Dr. Palla Parasuram Yadav |
 | **IT440**   | Practical Training                            | Dr. Nagamma Patil |
+| **IT416**   | Computer Vision                               | Dr. Dinesh Naik |
+| **IT482**   | Social Network Analysis                               | Dr. Sowmya Kamath |
+| **IT468**   | Quantum Computing                               | Dr. Bhavana Rudra |
 
 ---
