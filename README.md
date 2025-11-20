@@ -31,5 +31,7 @@ This repository contains my completed assignments for the **Information Technolo
 | **IT416**   | Computer Vision                               | Dr. Dinesh Naik |
 | **IT482**   | Social Network Analysis                               | Dr. Sowmya Kamath |
 | **IT468**   | Quantum Computing                               | Dr. Bhavana Rudra |
+| **IT479M**   | Machine Learning Minor Project          | Dr. Purushothama B R                                   |
+| **IT449**   | Major Project - I          | Dr. Purushothama B R                                   |
 
 ---
