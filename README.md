@@ -19,6 +19,7 @@ This repository contains my completed assignments for the **Information Technolo
 | **IT252**   | Database Systems                              | Ms. Anita S R, Dr. Shrutilipi Bhattacharjee           |
 | **IT253**   | Operating Systems                             | Dr. Janani T                                           |
 | **IT254**   | Web Technologies and Applications             | Dr. Deepa C                                            |
+| **IT290**   | Seminar             | Dr. Dinesh Naik                                            |
 | **IT300**   | Design and Analysis of Algorithms             | Dr. Purushothama B R                                   |
 | **IT301**   | Parallel Computing                            | Dr. Jayashree T R                                      |
 | **IT302**   | Probability and Statistics                    | Mr. Santanu Dey                                        |
@@ -26,7 +27,7 @@ This repository contains my completed assignments for the **Information Technolo
 | **IT350**   | Data Analytics                                | Dr. Nagamma Patil, Mr. Gautam Amiya                   |
 | **IT351**   | Human Computer Interaction                    | Dr. Geetha V, Mr. Santanu Dey                          |
 | **IT352**   | Information Assurance and Security            | Dr. Jaidhar C D                                        |
-| **IT464**   | Foundations of Machine Learning               | Prof. Ram Mohana Reddy Guddeti, Dr. Palla Parasuram Yadav |
+| **IT464**   | Foundations of Machine Learning               | Dr. Ram Mohana Reddy Guddeti, Dr. Palla Parasuram Yadav |
 | **IT440**   | Practical Training                            | Dr. Nagamma Patil |
 | **IT416**   | Computer Vision                               | Dr. Dinesh Naik |
 | **IT482**   | Social Network Analysis                               | Dr. Sowmya Kamath |
