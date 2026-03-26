@@ -35,6 +35,6 @@ This repository contains my completed assignments for the **Information Technolo
 | **IT414**   | Data Warehousing and Data Mining          | Dr. Nagamma Patil                                 |
 | **IT479M**   | Machine Learning Minor Project          | Dr. Purushothama B R                                   |
 | **IT449**   | Major Project - I          | Dr. Purushothama B R                                   |
-| **IT449**   | Major Project - II          | Dr. Purushothama B R                                   |
+| **IT499**   | Major Project - II          | Dr. Purushothama B R                                   |
 
 ---
